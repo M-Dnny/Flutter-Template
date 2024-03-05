@@ -17,3 +17,10 @@ The following packages are specified in the pubspec.yaml:
 - google_fonts
 - image_picker
 - rename
+
+## Note
+
+The Project contain a powershell script to configure it globally
+
+- Move that script to prefered location copy the path
+- Add the copied path to the system and user ENV path
