@@ -8,7 +8,7 @@
 
 The following packages are specified in the pubspec.yaml:
 
-- cached_network_image: ^3.3.1
+- cached_network_image
 - connectivity_plus
 - dio
 - flutter_riverpod
