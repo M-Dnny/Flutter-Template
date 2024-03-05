@@ -16,3 +16,4 @@ The following packages are specified in the pubspec.yaml:
 - go_router
 - google_fonts
 - image_picker
+- rename
