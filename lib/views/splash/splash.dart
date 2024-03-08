@@ -4,7 +4,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_template/services/internet_available.dart';
-import 'package:my_template/utils/extentions.dart';
 
 class SplashScreen extends StatefulWidget {
   static const routeName = '/';
@@ -27,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (connectResult != ConnectivityResult.none) {
       if (await isInternetAvailable()) {
         Timer(const Duration(seconds: 2), () {
-          context.go('/drawerNav');
+          context.go('/login');
         });
       } else {
         showError();
@@ -68,13 +67,13 @@ class _SplashScreenState extends State<SplashScreen> {
             elevation: 4,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(100)),
-            child: Center(
+            child: const Center(
               child: Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Text('LOGO',
-                    style: context.textTheme.headlineMedium!.merge(
-                      const TextStyle(fontWeight: FontWeight.bold),
-                    )),
+                padding: EdgeInsets.all(18.0),
+                child: Hero(
+                  tag: "logo",
+                  child: FlutterLogo(size: 150),
+                ),
               ),
             ),
           ),

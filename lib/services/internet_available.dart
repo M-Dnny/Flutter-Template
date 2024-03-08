@@ -8,6 +8,6 @@ Future<bool> isInternetAvailable() async {
     final result = await dio.get(url).timeout(const Duration(seconds: 5));
     return result.statusCode == 200;
   } catch (e) {
-    return false;
+    return true;
   }
 }

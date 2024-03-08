@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_template/router/bottom_bar.dart';
 import 'package:my_template/router/drawer_nav.dart';
+import 'package:my_template/views/auth/login.dart';
 import 'package:my_template/views/home/home.dart';
 import 'package:my_template/views/splash/splash.dart';
 import 'package:my_template/views/user/user.dart';
@@ -12,6 +13,11 @@ final router = GoRouter(
       path: '/',
       name: 'splash',
       builder: (context, state) => const SplashScreen(),
+    ),
+    GoRoute(
+      path: '/login',
+      name: 'login',
+      builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
       path: '/drawerNav',

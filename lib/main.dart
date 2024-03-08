@@ -21,14 +21,14 @@ class MainApp extends ConsumerWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: lightColorScheme,
-        textTheme: GoogleFonts.aboretoTextTheme(context.textTheme).apply(
+        textTheme: GoogleFonts.poppinsTextTheme(context.textTheme).apply(
             bodyColor: context.theme.colorScheme.inverseSurface,
             displayColor: context.theme.colorScheme.inverseSurface),
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
         colorScheme: darkColorScheme,
-        textTheme: GoogleFonts.aboretoTextTheme(context.textTheme).apply(
+        textTheme: GoogleFonts.poppinsTextTheme(context.textTheme).apply(
             bodyColor: context.theme.colorScheme.surface,
             displayColor: context.theme.colorScheme.surface),
       ),
