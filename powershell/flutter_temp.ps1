@@ -1,7 +1,9 @@
 # Requires -Version 5.1
 param(
     [Parameter(Mandatory=$true)]
-    [string]$NewProjectName
+    [string]$NewProjectName,
+    [Parameter(Mandatory=$true)]
+    [string]$BundleId
 )
 
 if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
@@ -11,15 +13,20 @@ if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 
 
 # Validate project name (similar to Flutter's constraints)
-$check = -not ($NewProjectName -cmatch '^[a-z_]+[a-z0-9_]*$')
+$check = -not ($NewProjectName -cmatch '^[A-Z_]+[a-z_]+[a-z0-9_]*$')
 echo $check
-if (-not ($NewProjectName -cmatch '^[a-z_][a-z0-9_]*$')) {
+if (-not ($NewProjectName -cmatch '^[A-Z_][a-z_][a-z0-9_]*$')) {
     Write-Host "Project name '$NewProjectName' is not valid. It must start with a lowercase letter or underscore, followed by lowercase letters, digits, or underscores, and not include spaces or special characters."
     exit 1
 }
 
-$PackageName = "com.example.$NewProjectName"
-$TemplateGitURL = "https://github.com/sublime-developer-5/flutter_template.git"
+if (-not ($BundleId -cmatch '^([a-zA-Z_][a-zA-Z0-9_]*)+(\.([a-zA-Z_][a-zA-Z0-9_]*))*$')) {
+    Write-Host "Bundle identifier '$BundleId' is not valid. It must consist of alphanumeric characters and periods, and follow the reverse domain name convention."
+    exit 1
+}
+
+$PackageName = $BundleId
+$TemplateGitURL = "https://github.com/M-Dnny/Flutter-Template.git"
 
 # Clone the template
 git clone $TemplateGitURL $NewProjectName
@@ -37,7 +44,7 @@ git init
 flutter pub get
 flutter pub global activate rename
 dart run rename setAppName --targets ios,android --value "$NewProjectName"
-dart run rename setBundleId --targets android --value "$PackageName"
+dart run rename setBundleId --targets android --value "com.example.$PackageName"
 
 # Update project name in pubspec.yaml
 (Get-Content pubspec.yaml).Replace('name: my_template', "name: $NewProjectName") | Set-Content pubspec.yaml
@@ -60,13 +67,13 @@ $BuildGradlePath = Join-Path -Path $ProjectRoot -ChildPath "android\app\build.gr
 # Check if the build.gradle file exists
 if (Test-Path $BuildGradlePath) {
     # Read the contents of the build.gradle file, replace the namespace, and write the changes back
-    (Get-Content $BuildGradlePath) -replace 'namespace "com.example.my_template"', "namespace `"$PackageName`"" | Set-Content $BuildGradlePath
+    (Get-Content $BuildGradlePath) -replace 'namespace "com.example.my_template"', "namespace `"com.example.$PackageName`"" | Set-Content $BuildGradlePath
 }
 
 # Update the package name in MainActivity.kt
 $MainActivityPath = Join-Path -Path $NewPath -ChildPath "MainActivity.kt"
 if (Test-Path $MainActivityPath) {
-    (Get-Content $MainActivityPath) -replace 'package com.example.my_template', "package com.example.$NewProjectName" | Set-Content $MainActivityPath
+    (Get-Content $MainActivityPath) -replace 'package com.example.my_template', "package com.example.$PackageName" | Set-Content $MainActivityPath
 }
 
 # Update Dart file imports to reflect the new package name
