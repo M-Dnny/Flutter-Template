@@ -47,7 +47,7 @@ dart run rename setAppName --targets ios,android --value "$NewProjectName"
 dart run rename setBundleId --targets android --value "com.example.$PackageName"
 
 # Update project name in pubspec.yaml
-(Get-Content pubspec.yaml).Replace('name: my_template', "name: $NewProjectName") | Set-Content pubspec.yaml
+(Get-Content pubspec.yaml).Replace('name: my_template', "name: $PackageName") | Set-Content pubspec.yaml
 
 # Ensure you're running from the project root
 $ProjectRoot = Get-Location
@@ -79,7 +79,7 @@ if (Test-Path $MainActivityPath) {
 # Update Dart file imports to reflect the new package name
 $DartFiles = Get-ChildItem -Path $ProjectRoot -Filter *.dart -Recurse
 foreach ($file in $DartFiles) {
-    (Get-Content $file.FullName) -replace 'package:my_template', "package:$NewProjectName" | Set-Content $file.FullName
+    (Get-Content $file.FullName) -replace 'package:my_template', "package:$PackageName" | Set-Content $file.FullName
 }
 
 # Add changes to git and make initial commit
@@ -90,3 +90,5 @@ Write-Host "Your new Flutter project '$NewProjectName' is ready and based on you
 
 # open vs-code
 code .
+
+flutter pub get
